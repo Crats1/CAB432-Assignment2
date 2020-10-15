@@ -6,6 +6,24 @@ html
   script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
   script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js')
   script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js')
+  link(rel='stylesheet' href='/stylesheets/style.css')
 
   body
+  title Bootstrap Example
+  .jumbotron
+    img.twitterImg(src = "/twitter-logo.png")
+    h1 Twitter Sentiment
+    p Luke M and Chris R
+      .container-fluid
+        ul.nav.nav-tabs
+          li.active
+            a(href='#') Home
+          li
+            a(href='#') Sentiment Analysis
+          li
+            a(href='#') Sentiment Comparison
+  main
     block content
+
+  footer 
+    p Twitter Sentiment - CAB432 Assignment 2
