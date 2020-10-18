@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "axios": "^0.20.0",
+    "compromise": "^13.5.0",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
@@ -16,6 +17,8 @@
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
-    "nodemon": "^2.0.4"
+    "natural": "^2.1.5",
+    "nodemon": "^2.0.4",
+    "twit": "^2.2.11"
   }
 }
