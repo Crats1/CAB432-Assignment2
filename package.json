@@ -7,6 +7,7 @@
     "dev": "nodemon ./bin/www"
   },
   "dependencies": {
+    "aws-sdk": "^2.773.0",
     "axios": "^0.20.0",
     "compromise": "^13.6.0",
     "cookie-parser": "~1.4.4",
@@ -19,6 +20,8 @@
     "natural": "^2.1.5",
     "nodemon": "^2.0.4",
     "pug": "^3.0.0",
+    "redis": "^3.0.2",
+    "response-time": "^2.3.2",
     "twit": "^2.2.11"
   }
 }

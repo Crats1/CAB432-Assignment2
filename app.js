@@ -1,5 +1,6 @@
 const createError = require('http-errors');
 const express = require('express');
+const responseTime = require('response-time');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -24,6 +25,7 @@ app.use(cors());
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
 
+app.use(responseTime());
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
