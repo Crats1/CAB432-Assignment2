@@ -24,3 +24,7 @@ footer {
   text-align: right;
   padding-right: 2%;
 }
+
+.userTweets {
+  list-style-type: none;
+}
