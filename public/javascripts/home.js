@@ -22,7 +22,7 @@ function fetchTweets() {
 
             console.log(screenName)
             console.log(userName)
-            document.getElementById('tweets').innerHTML += "<b>" + screenName + "</b><br>" + tweet + "<br>"   
+            document.getElementById('tweets').innerHTML += "<div class='userTweets'><li class='col-sm-4'><b>" + screenName + "</b><br>" + tweet + "</li>"   
         }
     })
 }
