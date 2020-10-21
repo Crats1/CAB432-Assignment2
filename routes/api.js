@@ -6,8 +6,17 @@ const router = express.Router();
 const natural = require('natural');
 const nlp = require('compromise');
 
+const bucketName = process.env.BUCKET_NAME;
 const redisClient = redis.createClient();
 const {performance} = require('perf_hooks');
+const s3ApiVersion = '2006-03-01';
+const bucketPromise = new AWS.S3({apiVersion: s3ApiVersion}).createBucket({Bucket: bucketName}).promise();
+bucketPromise.then(data => {
+    console.log('Succesfully created ' + bucketName);
+})
+.catch(err => {
+    console.error(err, err.stack);
+});
 
 let Analyser = natural.SentimentAnalyzer;
 let stemmer = natural.PorterStemmer;
@@ -50,26 +59,53 @@ router.get('/search', (req, res, next) => {
     console.log(queryWords);
     const redisKey = `twitter:${queryWords}`;
 
-    return redisClient.get(redisKey, (err, reply) => {
-        const expires = 3600;
-        if (reply) {
-            let data = JSON.parse(reply);
+    // Try to get Tweets from Redis
+    return redisClient.get(redisKey, (err, redisReply) => {
+        const expires = 900;
+        if (redisReply) {
+            let data = JSON.parse(redisReply);
             data.statuses = analyseTweets(data.statuses);
-            redisClient.expire(redisKey, expires); // Reset expiry time of key
-            return res.status(200).json(JSON.parse(reply));
+            return res.status(200).json(JSON.parse(redisReply));
         }
+        
+        // Try to get Tweets from S3
+        const s3Key = `twitter-${queryWords}`;
+        const params = { Bucket: bucketName, Key: s3Key };
+        return new AWS.S3({apiVersion: s3ApiVersion}).getObject(params, (err, s3Reply) => {
+            if (s3Reply) {
+                const lastModified = Date.parse(s3Reply.LastModified);
+                const timeDifferenceInMinutes = (new Date().getTime() - lastModified) / 1000 / 60;
+                const lastModifiedDifference = 20;
+                if (timeDifferenceInMinutes < lastModifiedDifference) {
+                    let data = JSON.parse(s3Reply.Body);
+                    redisClient.setex(redisKey, expires, JSON.stringify(data));
+                    data.statuses = analyseTweets(data.statuses);
+                    return res.status(200).json(data);
+                }
+            }
 
-        twitter.get('search/tweets', { q: queryWords, count: 100, lang: 'en' })
-            .then((result) => {
-                redisClient.setex(redisKey, expires, JSON.stringify(result.data));
-                result.data.statuses = analyseTweets(result.data.statuses);
-                return res.json(result.data);
-            })
-            .catch((error) => {
-                console.error('error:', error);
-                res.status(error.response.status).json(error.response.data);
-                return;
-            });
+            // Get Tweets from Twitter API as last resort
+            twitter.get('search/tweets', { q: queryWords, count: 100, lang: 'en' })
+                .then((result) => {
+                    redisClient.setex(redisKey, expires, JSON.stringify(result.data));
+                    // Store in S3
+                    const body = JSON.stringify(result.data);
+                    const objectParams = { Bucket: bucketName, Key: s3Key, Body: body };
+                    const uploadPromise = new AWS.S3({ apiVersion: s3ApiVersion}).putObject(objectParams).promise();
+
+                    uploadPromise.then((data) => { 
+                        console.log("Successfully uploaded data to " + bucketName + "/" + s3Key);
+                    });                    
+
+                    result.data.statuses = analyseTweets(result.data.statuses);
+                    return res.json(result.data);
+                })
+                .catch((error) => {
+                    console.error('error:', error);
+                    res.status(error.response.status).json(error.response.data);
+                    return;
+                });            
+        })
     })
 });
 
