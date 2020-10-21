@@ -1,15 +1,15 @@
-// Assign query to global var after input from user is
-var query;
-
 function getInput() {
     var queryInput = 
         document.querySelector("#searchForm [name='search']");
-    query = queryInput.value;
+    let query = queryInput.value;
     document.getElementById('tweets').innerHTML = "Searching for: " + query + "<br>";
+    return query;
     
 }
 
-function fetchTweets() {
+function fetchTweets(e) {
+    e.preventDefault();
+    let query = getInput();
     url=`api/search?words=${query}`;
     return fetch(url)
     .then((res) => res.json())
@@ -27,6 +27,5 @@ function fetchTweets() {
     })
 }
 
-const submitButton = document.getElementById("submit");
-submitButton.addEventListener("click", getInput);
-submitButton.addEventListener("click", fetchTweets);
+let submitForm = document.getElementById('searchForm');
+submitForm.addEventListener('submit', fetchTweets);
