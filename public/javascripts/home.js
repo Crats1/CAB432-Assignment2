@@ -19,10 +19,11 @@ function fetchTweets(e) {
             screenName = data.statuses[i].user.screen_name
             userName = data.statuses[i].user.name
             tweet = data.statuses[i].text
+            sentiment = data.statuses[i].sentiment
 
             console.log(screenName)
             console.log(userName)
-            document.getElementById('tweets').innerHTML += "<div class='userTweets'><li class='col-sm-4'><b>" + screenName + "</b><br>" + tweet + "</li>"   
+            document.getElementById('tweets').innerHTML += "<div class='userTweets'><li class='col-sm-4'><b>" + screenName + "</b><br>" + tweet + "<br>Sentiment of Tweet: " + sentiment + "</li>"   
         }
     })
 }
