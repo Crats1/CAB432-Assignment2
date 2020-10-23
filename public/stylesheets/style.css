@@ -17,6 +17,19 @@ body {
   margin-bottom: 64px;
 }
 
+.container {
+  max-width: 100%
+}
+
+.container p {
+  font-size: 20px;
+}
+
+.Chart {
+  max-width: 100%;
+  margin-bottom: 50px;
+}
+
 footer {
   position: fixed;
   bottom: 0;
@@ -31,5 +44,28 @@ footer {
 
 .userTweets {
   list-style-type: none;
+  border: lightskyblue;
+  background-color: #F5F8FA;
+  border-radius: 25px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.userTweets b {
+  font-size: 26px;
+}
+
+.userTweets p {
+  font-size: 20px;
+}
+
+.userTweets i {
+  font-size: 18px;
+}
+
+.userTweets img {
+  border-radius: 50%;
+  height: 10%;
+  width: 10%;
 }
 

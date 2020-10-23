@@ -2,7 +2,7 @@ function getInput() {
     var queryInput = 
         document.querySelector("#searchForm [name='search']");
     let query = queryInput.value;
-    document.getElementById('tweets').innerHTML = "Searching for: " + query + "<br>";
+    document.getElementById('searchingFor').innerHTML = "Searching for: <b>" + query + "</b><br>";
     return query;
     
 }
@@ -15,18 +15,21 @@ function fetchTweets(e) {
     return fetch(url)
     .then((res) => res.json())
     .then((data) => {
-
+        document.getElementById('tweets').innerHTML = "";
         for(let i=0; i < data.statuses.length; i++){
             screenName = data.statuses[i].user.screen_name
             userName = data.statuses[i].user.name
             tweet = data.statuses[i].text
             sentiment = data.statuses[i].sentiment
+            profilePic = data.statuses[i].user.profile_image_url
+            createdAt = data.statuses[i].created_at
+
 
             chartArray.push(sentiment)
 
             console.log(screenName)
             console.log(userName)
-            document.getElementById('tweets').innerHTML += "<div class='userTweets'><li class='col-sm-4'><b>" + screenName + "</b><br>" + tweet + "<br>Sentiment of Tweet: " + sentiment + "</li>"   
+            document.getElementById('tweets').innerHTML += "<div class='userTweets'><img class=profilePic src=" + profilePic + ">" + "<br><b>@" + screenName + "</b><br><p>" + tweet + "<br><i>Sentiment of Tweet: " + sentiment + "<br>Date posted: " + createdAt + "</i></li>"   
         }
 
 
