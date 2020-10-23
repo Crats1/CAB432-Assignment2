@@ -1,20 +1,21 @@
 extends layout
-
 block content
-  .container
+    .container
 
     h1 Twitter Search
     p Search for a Topic
 
     form#searchForm
-      input(type='text' name='search')
-      input#submit(type='submit' value='Submit')
-    #tweets
-    
-  
-
-
-  script(src='/javascripts/home.js')
+        input(type='text' name='search')
+        input#submit(type='submit' value='Submit')
+    div#tweets
+        if tweets
+            each item in tweets.statuses
+                div(class='userTweets')
+                    li(class='col-sm-4')
+                        strong=item.user.screen_name
+                        p=item.text
+    script(src='/javascripts/home.js')
 
 
 

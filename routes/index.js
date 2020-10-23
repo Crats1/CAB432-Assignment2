@@ -1,9 +1,19 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const getTweets = require('../models/services');
+const pageTitle = 'Home Page'
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'HomePage' });
+    const queries = req.query;
+    let queryWords = null;
+    if (queries.hasOwnProperty('words')) {
+        queryWords = queries.words;
+    } else {
+        return res.render('index', { title: pageTitle, tweets: [] });
+    }
+    getTweets(queryWords, (data) => {
+        return res.render('index', { title: pageTitle, tweets: data });
+    });
 });
 
 module.exports = router;
