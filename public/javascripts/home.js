@@ -26,15 +26,11 @@ function fetchTweets(e) {
 
 
             chartArray.push(sentiment)
-
-            console.log(screenName)
-            console.log(userName)
             document.getElementById('tweets').innerHTML += "<div class='userTweets'><img class=profilePic src=" + profilePic + ">" + "<br><b>@" + screenName + "</b><br><p>" + tweet + "<br><i>Sentiment of Tweet: " + sentiment + "<br>Date posted: " + createdAt + "</i></li>"   
         }
 
 
         labels =  ['Negative', 'Neutral', 'Positive']
-        console.log(chartArray);
         renderChart(chartArray, labels);
     })
 }
@@ -63,12 +59,7 @@ function renderChart(data, labels) {
         else {
             positive.push(data[i])
         }
-    }
-
-    console.log(negative)
-    console.log(neutral)
-    console.log(positive)
-    
+    }    
     neg = negative.length
     neu = neutral.length
     pos = positive.length
