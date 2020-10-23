@@ -13,6 +13,10 @@ padding-bottom: 0px;
   width: 3.5%;
 }
 
+body {
+  margin-bottom: 64px;
+}
+
 footer {
   position: fixed;
   bottom: 0;
@@ -28,3 +32,4 @@ footer {
 .userTweets {
   list-style-type: none;
 }
+
