@@ -33,7 +33,7 @@ function storeInRedis(redisKey, body) {
 }
 
 function storeInS3(s3Key, body) {
-    const objectParams = { Bucket: bucketName, Key: s3Key, Body: body };
+    const objectParams = { Bucket: bucketName, Key: s3Key, Body: JSON.stringify(body) };
     const uploadPromise = new AWS.S3({ apiVersion: s3ApiVersion}).putObject(objectParams).promise();
 
     uploadPromise.then((data) => { 
@@ -43,6 +43,7 @@ function storeInS3(s3Key, body) {
 
 function getTweets(screenName, callBack) {
     // Try to get Tweets from Redis
+    screenName = screenName.toLowerCase();
     const redisKey = `twitter:${screenName}`;
     return redisClient.get(redisKey, (err, redisReply) => {
         if (redisReply) {
@@ -73,8 +74,8 @@ function getTweets(screenName, callBack) {
             twitter.get('statuses/user_timeline', { screen_name: screenName, count: 200, tweet_mode: 'extended' })
                 .then((result) => {
                     let body = { statuses: result.data };
-                    // storeInRedis(redisKey, body);
-                    // storeInS3(s3Key, body);
+                    storeInRedis(redisKey, body);
+                    storeInS3(s3Key, body);
                     body = analyseTweets(body);
                     return callBack(body);
                 })
