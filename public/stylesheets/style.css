@@ -1,33 +1,18 @@
-.jumbotron {
-    text-align: center;
-    padding-top: 10px;
-    padding-bottom: 0px;
-}
-
-.nav-tabs{
-    text-items: center;
-}
-
-.twitterImg {
-    height: 3.5%;
-    width: 3.5%;
-}
-
 body {
-  margin-bottom: 64px;
+    margin-bottom: 64px;
 }
 
 .container {
-  max-width: 100%
+    max-width: 100%
 }
 
 .container p {
-  font-size: 20px;
+    font-size: 20px;
 }
 
 .Chart {
-  max-width: 100%;
-  margin-bottom: 50px;
+    max-width: 100%;
+    margin-bottom: 50px;
 }
 
 footer {
@@ -43,30 +28,34 @@ footer {
 }
 
 .userTweets {
-  list-style-type: none;
-  border: lightskyblue;
-  background-color: #F5F8FA;
-  border-radius: 25px;
-  padding: 10px;
-  margin-bottom: 10px;
+    list-style-type: none;
+    border: lightskyblue;
+    background-color: #F5F8FA;
+    border-radius: 25px;
+    padding: 10px;
+    margin-bottom: 10px;
 }
 
 .userTweets b {
-  font-size: 26px;
-  color: #1DA1F2;
+    font-size: 26px;
+    color: #1DA1F2;
 }
 
 .userTweets p {
-  font-size: 20px;
+    font-size: 20px;
 }
 
 .userTweets i {
-  font-size: 18px;
+    font-size: 18px;
 }
 
 .userTweets img {
-  border-radius: 50%;
-  height: 10%;
-  width: 10%;
+    border-radius: 50%;
+    height: 10%;
+    width: 10%;
 }
 
+#grid {
+    height: 600px;
+    width: 100%;
+}

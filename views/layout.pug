@@ -1,25 +1,18 @@
-doctype html
 html
-  head
-    title= title
-  link(href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.css', rel='stylesheet')
-  script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
-  script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js')
-  script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js')
-  link(rel='stylesheet' href='/stylesheets/style.css')
-  link(rel='icon' type='image/png' href='images/twitter-logo.png')
-  body
-  <!--title Bootstrap Example
-  .jumbotron
-    img.twitterImg(src = "images/twitter-logo.png")
-    h1 Twitter Sentiment
-    p Luke M and Chris R
-      .container-fluid
-        ul.nav.nav-tabs
-          li.link
-            a(href='/') Home-->
-  main
-    block content
-
-  footer 
-    p Twitter Sentiment App - CAB432 Assignment 2 - By Luke M and Chris R
+    head
+        title= title
+        link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh", crossorigin="anonymous")
+        link(href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.css' rel='stylesheet')
+        script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
+        script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js')
+        script(src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js")
+        link(rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css")
+        link(rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-alpine.css")
+        link(rel='stylesheet' href='/stylesheets/style.css')
+        link(rel='icon' type='image/png' href='images/twitter-logo.png')
+    body
+        script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous")
+        script(src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous")
+        script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous")        
+        block content

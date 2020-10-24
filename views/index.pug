@@ -1,27 +1,33 @@
 extends layout
 block content
-    .container
-
-    h1 Twitter Search
-    p Search for a topic..
-
-    form#searchForm
-        input(type='text' name='search')
-        input#submit(type='submit' value='Submit')
-    div#tweets
-        if tweets
-            each item in tweets.statuses
-                div(class='userTweets')
-                    li(class='col-sm-4')
-                        strong=item.user.screen_name
-                        p=item.text
-    #searchingFor
-    .Chart
-        canvas#myChart
-    #tweets
-    
+    div(id='tweet-modal' class='modal fade in' tab-index='-1')
+        div(class='modal-dialog')
+            div(class='modal-content')
+                div(class='modal-header')
+                    h3(class='modal-title') Tweet info
+                    button(type='button' class='close' data-dismiss='modal' arial-close='Close')
+                        span(aria-hidden='true') &times;
+                div(class='modal-body')
+                    h4(id='tweet-text')
+                    p(id='tweet-user')
+                    p(id='tweet-url')
+                    p(id='tweet-retweets')
+                    p(id='tweet-favourites')
+                    p(id='tweet-sentiment')
+                    div(id='tweet-misspellings' class='table-responsive')
+    div.container
+        h1 Twitter Sentiment Analysis App
+        p Search for a user e.g. realDonaldTrump, joebiden, qut
+        form#searchForm
+            input(type='text' name='search')
+            input#submit(type='submit' value='Search')
+        div(id='searching-for-container')
+            p(id='searchingFor')
+            div(class='spinner-border text-primary' role='status' id='loading-spinner')
+                span(class='sr-only') Loading...
+        div.Chart
+            canvas#myChart
+        div#tweets
+        div(id='grid' class="ag-theme-alpine")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js")        
     script(src='/javascripts/home.js')
-
-
-
-

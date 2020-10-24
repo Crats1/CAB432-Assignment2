@@ -27,14 +27,12 @@ redisClient.on('error', (err) => {
     console.log('Error ' + err);
 });
 
-function storeInRedis(queryWords, body) {
-    const redisKey = `twitter:${queryWords}`;
+function storeInRedis(redisKey, body) {
     const expires = 900;
-    redisClient.setex(redisKey, expires, body);
+    redisClient.setex(redisKey, expires, JSON.stringify(body));
 }
 
-function storeInS3(queryWords, body) {
-    const s3Key = `twitter-${queryWords}`;
+function storeInS3(s3Key, body) {
     const objectParams = { Bucket: bucketName, Key: s3Key, Body: body };
     const uploadPromise = new AWS.S3({ apiVersion: s3ApiVersion}).putObject(objectParams).promise();
 
@@ -43,19 +41,19 @@ function storeInS3(queryWords, body) {
     });      
 }
 
-function getTweets(queryWords, callBack) {
+function getTweets(screenName, callBack) {
     // Try to get Tweets from Redis
-    const redisKey = `twitter:${queryWords}`;
+    const redisKey = `twitter:${screenName}`;
     return redisClient.get(redisKey, (err, redisReply) => {
         if (redisReply) {
             console.log('Fetching from Redis');
             let data = JSON.parse(redisReply);
-            data.statuses = analyseTweets(data.statuses);
+            data = analyseTweets(data);
             return callBack(data);
         }
         
         // Try to get Tweets from S3
-        const s3Key = `twitter-${queryWords}`;
+        const s3Key = `twitter-${screenName}`;
         const params = { Bucket: bucketName, Key: s3Key };
         return new AWS.S3({apiVersion: s3ApiVersion}).getObject(params, (err, s3Reply) => {
             if (s3Reply) {
@@ -65,26 +63,24 @@ function getTweets(queryWords, callBack) {
                 if (timeDifferenceInMinutes < lastModifiedDifference) {
                     console.log('Fetching from S3');
                     let data = JSON.parse(s3Reply.Body);
-                    storeInRedis(queryWords, JSON.stringify(data));
-                    data.statuses = analyseTweets(data.statuses);
+                    storeInRedis(redisKey, data);
+                    data = analyseTweets(data);
                     return callBack(data);
                 }
             }
             // Get Tweets from Twitter API as last resort
             console.log('Fetching from Twitter API');
-            twitter.get('search/tweets', { q: queryWords, count: 5, lang: 'en' })
+            twitter.get('statuses/user_timeline', { screen_name: screenName, count: 200, tweet_mode: 'extended' })
                 .then((result) => {
-                    const body = JSON.stringify(result.data);
-                    storeInRedis(queryWords, body);
-                    storeInS3(queryWords, body);
-
-                    result.data.statuses = analyseTweets(result.data.statuses);
-                    return callBack(result.data);
+                    let body = { statuses: result.data };
+                    // storeInRedis(redisKey, body);
+                    // storeInS3(s3Key, body);
+                    body = analyseTweets(body);
+                    return callBack(body);
                 })
                 .catch((error) => {
                     console.error('error:', error);
-                    res.status(error.response.status).json(error.response.data);
-                    return callBack(null);
+                    return callBack(error);
                 });
         });
     });
