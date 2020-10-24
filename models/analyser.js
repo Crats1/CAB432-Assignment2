@@ -7,7 +7,7 @@ let Analyser = natural.SentimentAnalyzer;
 let stemmer = natural.PorterStemmer;
 let analyser = new Analyser('English', stemmer, 'afinn');
 let tokenizer = new natural.WordPunctTokenizer();
-let corpus = fs.readFileSync(path.join(__dirname, 'dictionary.txt')).toString().split('\r\n');
+let corpus = fs.readFileSync(path.join(__dirname, 'dictionary.txt')).toString().split(' ');
 let spellcheck = new natural.Spellcheck(corpus);
 
 function tokenizeText(text) {
