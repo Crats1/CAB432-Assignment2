@@ -53,7 +53,7 @@ function showTweetInfo(event) {
         misspellingsHTML += '</table>';
         misspellingsElement.innerHTML = misspellingsHTML;
     } else {
-        misspellingsElement.innerHTML = '';
+        misspellingsElement.innerHTML = 'No misspellings found';
     }
 }
 
@@ -72,7 +72,7 @@ function hideResultElements() {
 
 function showNoTweetsFoundScreen() {
     hideResultElements();
-    document.getElementById('tweets').innerHTML = `<h3>No tweets found for ${query}</h3>`;    
+    document.getElementById('tweets').innerHTML = `<h3>No tweets found</h3>`;    
 }
 
 function getInput() {
@@ -103,11 +103,11 @@ function fetchTweets(e) {
     .then((res) => res.json())
     .then((data) => {
         tweets = data;
-        let chartArray = data.statuses.map((val) => val.sentiment);
         if (data.hasOwnProperty('error') && data.error) {
             showNoTweetsFoundScreen();
             return;
         }
+        let chartArray = data.statuses.map((val) => val.sentiment);
         showResultElements();
         document.getElementById('tweets').innerHTML = `<h3>Tweets from <a href='https://twitter.com/${query}'>@${query}</a></h3>`;
         renderTable(data);
@@ -116,6 +116,7 @@ function fetchTweets(e) {
     })
     .catch((err) => {
         console.log(err);
+        showNoTweetsFoundScreen();
     });
 }
 
